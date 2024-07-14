@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "+rJqA4ddqJ8Cn+9pck1mTSd6yEYroAUgeT5Twg0GVECv7o5KpJqekUpVyOgSPcf4szOL5cSPyssEVPULGl7ekA==",
+  "success": true,
+  "projectFilePath": "E:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\wishm\\.nuget\\packages\\microsoft.extensions.apidescription.server\\3.0.0\\microsoft.extensions.apidescription.server.3.0.0.nupkg.sha512",
+    "C:\\Users\\wishm\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
+    "C:\\Users\\wishm\\.nuget\\packages\\swashbuckle.aspnetcore\\6.2.3\\swashbuckle.aspnetcore.6.2.3.nupkg.sha512",
+    "C:\\Users\\wishm\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.2.3\\swashbuckle.aspnetcore.swagger.6.2.3.nupkg.sha512",
+    "C:\\Users\\wishm\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.2.3\\swashbuckle.aspnetcore.swaggergen.6.2.3.nupkg.sha512",
+    "C:\\Users\\wishm\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\6.2.3\\swashbuckle.aspnetcore.swaggerui.6.2.3.nupkg.sha512"
+  ],
+  "logs": []
+}

@@ -23,10 +23,12 @@ namespace api.Controllers
     {
 
         private readonly IStockRepository _repo;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public StockController(StockRepository stockRepo)
+        public StockController(IRepositoryManager stockRepo)
         {
-            _repo = stockRepo;
+            _repo = stockRepo.stockRepo;
+            _unitOfWork = stockRepo.unitOfWork;
         }
 
         [HttpGet("{id}")]
@@ -57,7 +59,7 @@ namespace api.Controllers
             var stockmodel = dto.Adapt<Stock>();
             bool p = await _repo.Add(stockmodel);
             if(p){
-                await _repo.SaveChanges();
+                await _unitOfWork.Complete();
                 return CreatedAtAction(nameof(GetStock), new { id = stockmodel.Id }, stockmodel.Adapt<StockDTO>());
             }
 
@@ -66,11 +68,17 @@ namespace api.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdateStock([FromRoute] int id, [FromBody] UpdateStockDTO dto){
-            
-            var stockmodel = _repo.Update(dto.Adapt<Stock>(), id);
+        public async Task<IActionResult> UpdateStockAsync([FromRoute] int id, [FromBody] UpdateStockDTO dto)
+        {
 
-            return Ok(stockmodel.Adapt<StockDTO>());
+            bool s = await _repo.Update(dto.Adapt<Stock>(), id);
+            if(s){
+                await _unitOfWork.Complete();
+            }else{
+                return NotFound();
+            }
+
+            return Ok();
         }
 
         [HttpDelete]
@@ -82,7 +90,7 @@ namespace api.Controllers
                 return NotFound();
             }
 
-            await _repo.SaveChanges();
+            await _unitOfWork.Complete();
 
             return NoContent();
         }

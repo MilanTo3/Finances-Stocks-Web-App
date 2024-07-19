@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Interfaces;
 using api.AppDbContext;
 using Microsoft.EntityFrameworkCore;
+using Mapster;
 
 namespace api.Repositories
 {
@@ -56,10 +57,6 @@ namespace api.Repositories
             dbSet.Update(entity);
 
             return true;
-        }
-
-        public Task SaveChanges(){
-            return Context.SaveChangesAsync();
         }
 
     }

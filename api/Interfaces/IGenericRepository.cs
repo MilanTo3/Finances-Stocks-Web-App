@@ -12,6 +12,6 @@ namespace api.Interfaces
         Task<bool> Add(T entity);
         Task<bool> Delete(long id);
         Task<bool> Update(T entity, int id);
-        Task SaveChanges();
+
     }
 }

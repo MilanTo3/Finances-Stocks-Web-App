@@ -13,6 +13,8 @@ using Microsoft.EntityFrameworkCore;
 using Mapster;
 using api.DTOs;
 using api.Models;
+using api.Interfaces;
+using api.Repositories;
 
 namespace api.Controllers
 {
@@ -20,19 +22,19 @@ namespace api.Controllers
     public class StockController : ControllerBase
     {
 
-        private readonly ApplicationDbContext _context;
+        private readonly IStockRepository _repo;
 
-        public StockController(ApplicationDbContext context)
+        public StockController(StockRepository stockRepo)
         {
-            _context = context;
+            _repo = stockRepo;
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetStock([FromRoute]int id){
             
-            var k = await _context.Stocks.FindAsync(id);
-            if(k != null){
-                var retval = k.Adapt<StockDTO>();
+            var s = await _repo.getById(id);
+            if(s != null){
+                var retval = s.Adapt<StockDTO>();
                 return Ok(retval);
             }else{
                 return BadRequest("Stock by that id doesn't exist.");
@@ -43,40 +45,30 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetStocks(){
 
-            var k = (await _context.Stocks.ToListAsync()).Adapt<IEnumerable<StockDTO>>();
+            var k = await _repo.getAll();
+            var p = k.Adapt<IEnumerable<StockDTO>>();
 
-            return Ok(k);
+            return Ok(p);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateStock([FromBody] CreateStockDTO dto){
 
             var stockmodel = dto.Adapt<Stock>();
-            _context.Stocks.Add(stockmodel);
-            _context.SaveChanges();
+            bool p = await _repo.Add(stockmodel);
+            if(p){
+                await _repo.SaveChanges();
+                return CreatedAtAction(nameof(GetStock), new { id = stockmodel.Id }, stockmodel.Adapt<StockDTO>());
+            }
 
-            return CreatedAtAction(nameof(GetStock), new { id = stockmodel.Id }, stockmodel.Adapt<StockDTO>());
+            return BadRequest();
         }
 
         [HttpPut]
         [Route("{id}")]
         public async Task<IActionResult> UpdateStock([FromRoute] int id, [FromBody] UpdateStockDTO dto){
             
-            var stockmodel = await _context.Stocks.FindAsync(id);
-
-            if(stockmodel == null){
-                return NotFound();
-            }
-
-            
-            stockmodel.Symbol = dto.Symbol;
-            stockmodel.CompanyName = dto.CompanyName;
-            stockmodel.Purchase = dto.Purchase;
-            stockmodel.LastDiv = dto.LastDiv;
-            stockmodel.Industry = dto.Industry;
-            stockmodel.MarketCap = dto.MarketCap;
-
-            _context.SaveChanges();
+            var stockmodel = _repo.Update(dto.Adapt<Stock>(), id);
 
             return Ok(stockmodel.Adapt<StockDTO>());
         }
@@ -85,13 +77,12 @@ namespace api.Controllers
         [Route("{id}")]
         public async Task<IActionResult> DeleteStock([FromRoute] int id){
             
-            var stockmodel = await _context.Stocks.FindAsync(id);
-            if(stockmodel == null){
+            bool s = await _repo.Delete(id);
+            if(!s){
                 return NotFound();
             }
 
-            _context.Stocks.Remove(stockmodel);
-            _context.SaveChanges();
+            await _repo.SaveChanges();
 
             return NoContent();
         }

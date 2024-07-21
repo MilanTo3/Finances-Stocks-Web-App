@@ -46,10 +46,11 @@ namespace api.Controllers
             return Ok(p);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateComment([FromBody] CommentDTO dto){
+        [HttpPost("{id}")]
+        public async Task<IActionResult> CreateComment([FromRoute] int id, [FromBody] CommentDTO dto){
 
             var stockmodel = dto.Adapt<Comment>();
+            stockmodel.StockId = id;
             bool p = await _repo.Add(stockmodel);
             if(p){
                 await _unitOfWork.Complete();
@@ -67,7 +68,7 @@ namespace api.Controllers
             bool s = await _repo.Update(dto.Adapt<Comment>(), id);
             if(s){
                 await _unitOfWork.Complete();
-            }else{
+            }else{```
                 return NotFound();
             }
 

@@ -68,7 +68,7 @@ namespace api.Controllers
             bool s = await _repo.Update(dto.Adapt<Comment>(), id);
             if(s){
                 await _unitOfWork.Complete();
-            }else{```
+            }else{
                 return NotFound();
             }
 

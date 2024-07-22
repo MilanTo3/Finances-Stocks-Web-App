@@ -13,5 +13,17 @@ namespace api.Repositories
         public CommentRepository(ApplicationDbContext cont) : base(cont)
         {
         }
+
+        public async Task<bool> Add(int id, Comment dto){
+
+            try {
+                dto.StockId = id;
+                await dbSet.AddAsync(dto);
+            }
+            catch {
+                return false;
+            }
+            return true;
+        }
     }
 }

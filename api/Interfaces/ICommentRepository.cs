@@ -8,6 +8,6 @@ namespace api.Interfaces
 {
     public interface ICommentRepository: IGenericRepository<Comment>
     {
-        
+        Task<bool> Add(int id, Comment dto);
     }
 }

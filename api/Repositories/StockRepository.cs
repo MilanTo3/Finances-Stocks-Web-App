@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.AppDbContext;
 using api.Interfaces;
 using api.Models;
+using api.DTOs;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repositories
@@ -15,16 +16,28 @@ namespace api.Repositories
         {
         }
 
-        public override async Task<IEnumerable<Stock>> getAll()
+        public async Task<IEnumerable<Stock>> getAll(QueryObject qor)
         {
-            
-            return await base.Context.Stocks.Include(x => x.Comments).ToListAsync();
+
+            var retVal = await Context.Stocks.Include(x => x.Comments).ToListAsync();
+            if(qor.Symbol != null){
+                retVal = (List<Stock>)retVal.Select(x => x.Symbol == qor.Symbol);
+            }else if(qor.CompanyName != null){
+                retVal = (List<Stock>)retVal.Select(x => x.CompanyName == qor.CompanyName);
+            }else if(qor.SortBy != null){
+                if(qor.SortBy.ToLower() == "symbol"){
+                    retVal = (qor.ascending ? retVal.OrderBy(x => x.Symbol) : retVal.OrderByDescending(x => x.Symbol)).ToList();
+                }
+            }
+
+            var skipNumber = (qor.pageNumber - 1) * qor.pageSize;
+
+            return retVal.Skip(skipNumber).Take(qor.pageSize);
         }
 
-        public override Task<Stock> getById(long id)
+        public override async Task<Stock> getById(long id)
         {
-
-            return base.Context.Stocks.Include(x => x.Comments).FirstOrDefaultAsync(x => x.Id == id);
+            return await Context.Stocks.Include(x => x.Comments).FirstOrDefaultAsync(x => x.Id == id);
         }
     }
 }

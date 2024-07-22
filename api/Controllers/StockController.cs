@@ -31,7 +31,7 @@ namespace api.Controllers
             _unitOfWork = stockRepo.unitOfWork;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetStock([FromRoute]int id){
             
             var s = await _repo.getById(id);
@@ -45,7 +45,7 @@ namespace api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetStocks(){
+        public async Task<IActionResult> GetStocks(QueryObject qor){
 
             var k = await _repo.getAll();
             var p = k.Adapt<IEnumerable<StockDTO>>();
@@ -55,6 +55,10 @@ namespace api.Controllers
 
         [HttpPost]
         public async Task<IActionResult> CreateStock([FromBody] CreateStockDTO dto){
+
+            if(!ModelState.IsValid){
+                return BadRequest();
+            }
 
             var stockmodel = dto.Adapt<Stock>();
             bool p = await _repo.Add(stockmodel);
@@ -67,9 +71,13 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> UpdateStockAsync([FromRoute] int id, [FromBody] UpdateStockDTO dto)
         {
+
+            if(!ModelState.IsValid){
+                return BadRequest();
+            }
 
             bool s = await _repo.Update(dto.Adapt<Stock>(), id);
             if(s){
@@ -82,7 +90,7 @@ namespace api.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> DeleteStock([FromRoute] int id){
             
             bool s = await _repo.Delete(id);

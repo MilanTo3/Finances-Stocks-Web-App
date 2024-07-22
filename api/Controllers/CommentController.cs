@@ -24,9 +24,9 @@ namespace api.Controllers
             _unitOfWork = stockRepo.unitOfWork;
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public async Task<IActionResult> GetComment([FromRoute]int id){
-            
+
             var s = await _repo.getById(id);
             if(s != null){
                 var retval = s.Adapt<CommentDTO>();
@@ -46,12 +46,15 @@ namespace api.Controllers
             return Ok(p);
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("{id:int}")]
         public async Task<IActionResult> CreateComment([FromRoute] int id, [FromBody] CommentDTO dto){
 
+            if(!ModelState.IsValid){
+                return BadRequest();
+            }
+
             var stockmodel = dto.Adapt<Comment>();
-            stockmodel.StockId = id;
-            bool p = await _repo.Add(stockmodel);
+            bool p = await _repo.Add(id, stockmodel);
             if(p){
                 await _unitOfWork.Complete();
                 return CreatedAtAction(nameof(GetComment), new { id = stockmodel.Id }, stockmodel.Adapt<CommentDTO>());
@@ -61,9 +64,13 @@ namespace api.Controllers
         }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> UpdateCommentAsync([FromRoute] int id, [FromBody] CommentDTO dto)
         {
+
+            if(!ModelState.IsValid){
+                return BadRequest();
+            }
 
             bool s = await _repo.Update(dto.Adapt<Comment>(), id);
             if(s){
@@ -76,9 +83,9 @@ namespace api.Controllers
         }
 
         [HttpDelete]
-        [Route("{id}")]
+        [Route("{id:int}")]
         public async Task<IActionResult> DeleteComment([FromRoute] int id){
-            
+
             bool s = await _repo.Delete(id);
             if(!s){
                 return NotFound();

@@ -6,6 +6,7 @@ using api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using api.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => { options.Passwor
                                                     options.Password.RequireUppercase = true;
                                                     options.Password.RequireNonAlphanumeric = true; }).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =

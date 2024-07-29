@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Models
 {
+    [Table("Comments")]
     public class Comment
     {
         [Key]

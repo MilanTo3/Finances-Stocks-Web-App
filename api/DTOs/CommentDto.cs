@@ -17,6 +17,7 @@ namespace api.DTOs
         [MinLength(5, ErrorMessage="Tittle must be at least 5 characters long.")]
         [MaxLength(280, ErrorMessage="Tittle cannot be over 280 character.")]
         public string Content{get;set;} = string.Empty;
+        public string CreatedBy{get;set;} = string.Empty;
 
     }
 }

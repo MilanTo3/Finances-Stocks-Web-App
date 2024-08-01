@@ -43,7 +43,7 @@ namespace api.Controllers
                 if(createdUser.Succeeded){
                     var roleResult = await _user.AddToRoleAsync(appUser, "User");
                     if(roleResult.Succeeded){
-                        return Ok(new NewUserDTO{ Username = appUser.UserName, Email = appUser.Email, Token = _tokenService.CreateToken(appUser) });
+                        return Ok(new NewUserDTO{ UserName = appUser.UserName, Email = appUser.Email, Token = _tokenService.CreateToken(appUser) });
                     }else{
                         return StatusCode(500, roleResult.Errors);
                     }
@@ -62,7 +62,7 @@ namespace api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var user = await _user.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.Username.ToLower());
+            var user = await _user.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName.ToLower());
 
             if (user == null) return Unauthorized("Invalid username!");
 
@@ -73,7 +73,7 @@ namespace api.Controllers
             return Ok(
                 new NewUserDTO
                 {
-                    Username = user.UserName,
+                    UserName = user.UserName,
                     Email = user.Email,
                     Token = _tokenService.CreateToken(user)
                 }

@@ -4,9 +4,11 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using api.DTOs;
+using api.Extensions;
 using api.Interfaces;
 using api.Models;
 using Mapster;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -17,12 +19,19 @@ namespace api.Controllers
     public class CommentController : Controller
     {
         private readonly ICommentRepository _repo;
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly IStockRepository _srepo;
+        private readonly IFMPService _fmpService;
 
-        public CommentController(IRepositoryManager stockRepo)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<AppUser> _userManager;
+
+        public CommentController(IRepositoryManager stockRepo, UserManager<AppUser> userManager, IFMPService fmpService)
         {
             _repo = stockRepo.commentRepo;
             _unitOfWork = stockRepo.unitOfWork;
+            _userManager = userManager;
+            _srepo = stockRepo.stockRepo;
+            _fmpService = fmpService;
         }
 
         [HttpGet("{id:int}")]
@@ -35,7 +44,6 @@ namespace api.Controllers
             }else{
                 return BadRequest("Stock by that id doesn't exist.");
             }
-
         }
 
         [HttpGet]
@@ -47,21 +55,34 @@ namespace api.Controllers
             return Ok(p);
         }
 
-        [HttpPost("{id:int}")]
-        public async Task<IActionResult> CreateComment([FromRoute] int id, [FromBody] CommentDTO dto){
+        [HttpPost("{symbol:alpha}")]
+        public async Task<IActionResult> CreateComment([FromRoute] string symbol, [FromBody] CommentDTO dto){
 
-            if(!ModelState.IsValid){
-                return BadRequest();
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var stock = await _srepo.getBySymbolAsync(symbol);
+
+            if (stock == null)
+            {
+                stock = await _fmpService.FindStockBySymbolAsync(symbol);
+                if (stock == null)
+                {
+                    return BadRequest("Stock does not exists");
+                }
+                else
+                {
+                    await _srepo.Add(stock);
+                }
             }
 
-            var stockmodel = dto.Adapt<Comment>();
-            bool p = await _repo.Add(id, stockmodel);
-            if(p){
-                await _unitOfWork.Complete();
-                return CreatedAtAction(nameof(GetComment), new { id = stockmodel.Id }, stockmodel.Adapt<CommentDTO>());
-            }
+            var username = User.GetUsername();
+            var appUser = await _userManager.FindByNameAsync(username);
 
-            return BadRequest();
+            var commentModel = dto.Adapt<Comment>();
+            commentModel.AppUserId = appUser.Id;
+            await _repo.Add(commentModel);
+            return CreatedAtAction(nameof(GetComment), new { id = commentModel.Id }, commentModel.Adapt<CommentDTO>());
         }
 
         [HttpPut]

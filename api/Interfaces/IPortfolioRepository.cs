@@ -9,5 +9,6 @@ namespace api.Interfaces
     public interface IPortfolioRepository : IGenericRepository<Portfolio>
     {
         Task<List<Stock>> getUserPortfolio(AppUser user);
+        Task<Portfolio> DeletePortfolio(AppUser appUser, string symbol);
     }
 }

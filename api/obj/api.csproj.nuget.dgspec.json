@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj": {}
+    "c:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj": {}
   },
   "projects": {
-    "C:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj": {
+    "c:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj",
+        "projectUniqueName": "c:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj",
+        "projectPath": "c:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj",
         "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "C:\\gege\\Finances-Stocks-Web-App\\api\\obj\\",
+        "outputPath": "c:\\gege\\Finances-Stocks-Web-App\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",

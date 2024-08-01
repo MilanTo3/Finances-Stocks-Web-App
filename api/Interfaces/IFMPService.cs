@@ -6,9 +6,9 @@ using api.Models;
 
 namespace api.Interfaces
 {
-    public interface ICommentRepository: IGenericRepository<Comment>
+    public interface IFMPService
     {
-        Task<bool> Add(int id, Comment dto);
-        Task<Comment> getById(int id);
+        Task<Stock> FindStockBySymbolAsync(string symbol);
+
     }
 }

@@ -10,5 +10,6 @@ namespace api.Interfaces
     public interface IStockRepository: IGenericRepository<Stock>
     {
         Task<IEnumerable<Stock>> getAll(QueryObject qor);
+        Task<Stock?> getBySymbolAsync(string symbol);
     }
 }

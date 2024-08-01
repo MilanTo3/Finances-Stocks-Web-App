@@ -16,6 +16,9 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(p => p.AddPolicy("corspolicy", build => {
+    build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader();
+}));
 builder.Services.AddDbContext<ApplicationDbContext>(options => { options.UseSqlServer(builder.Configuration.GetConnectionString("connstring")); });
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => { options.Password.RequireDigit = true;
                                                     options.Password.RequireLowercase = true;
@@ -23,6 +26,8 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options => { options.Passwor
                                                     options.Password.RequireNonAlphanumeric = true; }).AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IFMPService, FMPService>();
+builder.Services.AddHttpClient<IFMPService, FMPService>();
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =
@@ -47,6 +52,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 var app = builder.Build();
+app.UseCors("corspolicy");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

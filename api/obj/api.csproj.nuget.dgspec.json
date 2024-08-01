@@ -1,25 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "E:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj": {}
+    "C:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj": {}
   },
   "projects": {
-    "E:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj": {
+    "C:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj",
+        "projectUniqueName": "C:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "E:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj",
-        "packagesPath": "C:\\Users\\wishm\\.nuget\\packages\\",
-        "outputPath": "E:\\gege\\Finances-Stocks-Web-App\\api\\obj\\",
+        "projectPath": "C:\\gege\\Finances-Stocks-Web-App\\api\\api.csproj",
+        "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
+        "outputPath": "C:\\gege\\Finances-Stocks-Web-App\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\wishm\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

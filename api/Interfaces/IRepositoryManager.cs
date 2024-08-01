@@ -10,6 +10,7 @@ namespace api.Interfaces
     {
         IStockRepository stockRepo{get;}
         ICommentRepository commentRepo{get;}
+        IPortfolioRepository portfolioRepo{get;}
         IUnitOfWork unitOfWork{get;}
     }
 }

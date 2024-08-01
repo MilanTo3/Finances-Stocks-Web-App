@@ -17,9 +17,9 @@ using api.Service;
 namespace api.Controllers
 {
     [Route("api/account")]
+    [ApiController]
     public class AccountController : Controller
     {
-
         private readonly UserManager<AppUser> _user;
         private readonly ITokenService _tokenService;
         private readonly SignInManager<AppUser> _signinManager;

@@ -12,11 +12,13 @@ namespace api.AppDbContext
         
         private readonly Lazy<IStockRepository> stockRepository;
         private readonly Lazy<ICommentRepository> commentRepository;
+        private readonly Lazy<IPortfolioRepository> portfolioRepository;
         private readonly Lazy<IUnitOfWork> unitofWork;
 
         public RepositoryManager(ApplicationDbContext dbContext){
             stockRepository = new Lazy<IStockRepository>(() => new StockRepository(dbContext));
             commentRepository = new Lazy<ICommentRepository>(() => new CommentRepository(dbContext));
+            portfolioRepository = new Lazy<IPortfolioRepository>(() => new PortfolioRepository(dbContext));
             unitofWork = new Lazy<IUnitOfWork>(() => new UnitOfWork(dbContext));
 
         }
@@ -25,6 +27,9 @@ namespace api.AppDbContext
 
         public ICommentRepository commentRepo => commentRepository.Value;
 
+        public IPortfolioRepository portfolioRepo => portfolioRepository.Value;
+
         public IUnitOfWork unitOfWork => unitofWork.Value;
+
     }
 }

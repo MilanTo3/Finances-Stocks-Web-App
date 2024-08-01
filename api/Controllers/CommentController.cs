@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 namespace api.Controllers
 {
     [Route("api/comment")]
+    [ApiController]
     public class CommentController : Controller
     {
         private readonly ICommentRepository _repo;
